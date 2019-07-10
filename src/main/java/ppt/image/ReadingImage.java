@@ -1,4 +1,4 @@
-package image;
+package ppt.image;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +17,7 @@ public class ReadingImage {
     public static void main(String args[]) throws IOException{
 
         //open an existing presentation
-        File file = new File("addingImage.ppt");
+        File file = new File(".\\temp\\addingImage.ppt");
         XMLSlideShow ppt = new XMLSlideShow(new FileInputStream(file));
 
         //reading all the pictures in the presentation

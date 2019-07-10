@@ -87,7 +87,7 @@ public class PPtExportUtil {
         imgs.add("F:\\livejq.png");
         imgs.add("F:\\livejq.png");
         //获取图片信息：
-//      BufferedImage img = ImageIO.read(image);
+//      BufferedImage img = ImageIO.read(ppt.image);
         if (imgs.size() > 0) {
             for (int i = 0; i < imgs.size(); i++) {
                 //创建一张幻灯片
@@ -141,7 +141,7 @@ public class PPtExportUtil {
             }
         }
 
-        System.out.println("image added successfully");
+        System.out.println("ppt.image added successfully");
         return ppt;
     }
 

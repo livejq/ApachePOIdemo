@@ -1,4 +1,4 @@
-package layout;
+package ppt.layout;
 
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFSlideLayout;
@@ -11,7 +11,7 @@ import java.io.IOException;
  * @date 2019/7/10
  **/
 public class SlideLayouts {
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
 
         //create an empty presentation
         XMLSlideShow ppt = new XMLSlideShow();

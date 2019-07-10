@@ -1,58 +1,51 @@
-package HyperLink;
-
-
-import org.apache.poi.xslf.usermodel.SlideLayout;
-import org.apache.poi.xslf.usermodel.XMLSlideShow;
-import org.apache.poi.xslf.usermodel.XSLFHyperlink;
-import org.apache.poi.xslf.usermodel.XSLFSlide;
-import org.apache.poi.xslf.usermodel.XSLFSlideLayout;
-import org.apache.poi.xslf.usermodel.XSLFSlideMaster;
-import org.apache.poi.xslf.usermodel.XSLFTextRun;
-import org.apache.poi.xslf.usermodel.XSLFTextShape;
+package ppt.layout;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.poi.xslf.usermodel.SlideLayout;
+import org.apache.poi.xslf.usermodel.XMLSlideShow;
+import org.apache.poi.xslf.usermodel.XSLFSlide;
+import org.apache.poi.xslf.usermodel.XSLFSlideLayout;
+import org.apache.poi.xslf.usermodel.XSLFSlideMaster;
+import org.apache.poi.xslf.usermodel.XSLFTextShape;
 /**
  * @author livejq
  * @date 2019/7/10
  **/
-public class CreatingHyperLink {
-    public static void main(String args[]) throws IOException {
+public class TitleAndBodyLayout {
 
-        //create an empty presentation
+    public static void main(String[] args) throws IOException{
+
+        //creating presentation
         XMLSlideShow ppt = new XMLSlideShow();
 
         //getting the slide master object
         XSLFSlideMaster slideMaster = ppt.getSlideMasters().get(0);
 
-        //select a layout from specified list
+        //select a ppt.layout from specified list
         XSLFSlideLayout slidelayout = slideMaster.getLayout(SlideLayout.TITLE_AND_CONTENT);
 
-        //creating a slide with title and content layout
+        //creating a slide with title and content ppt.layout
         XSLFSlide slide = ppt.createSlide(slidelayout);
-
         //selection of title place holder
+        XSLFTextShape title = slide.getPlaceholder(0);
+
+        //setting the title in it
+        title.setText("introduction");
+
+        //selection of body placeholder
         XSLFTextShape body = slide.getPlaceholder(1);
 
-        //clear the existing text in the slid
+        //clear the existing text in the slide
         body.clearText();
 
         //adding new paragraph
-        XSLFTextRun textRun = body.addNewTextParagraph().addNewTextRun();
+        body.addNewTextParagraph().addNewTextRun().setText("this is my first slide body");
 
-        //setting the text
-        textRun.setText("Tutorials point");
-
-        //creating the hyperlink
-        XSLFHyperlink link = textRun.createHyperlink();
-
-        //setting the link address
-        link.setAddress("www.baidu.com");
-
-        //create the file object
-        File file = new File("hyperLink.ppt");
+        //create a file object
+        File file = new File(".\\temp\\contentlayout.ppt");
         FileOutputStream out = new FileOutputStream(file);
 
         //save the changes in a file

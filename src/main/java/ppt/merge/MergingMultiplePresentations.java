@@ -1,4 +1,4 @@
-package merge;
+package ppt.merge;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,8 +17,8 @@ public class MergingMultiplePresentations {
         XMLSlideShow ppt = new XMLSlideShow();
 
         //taking the two presentations that are to be merged
-        String file1 = "presentation1.ppt";
-        String file2 = "presentation2.ppt";
+        String file1 = "temp/presentation1.ppt";
+        String file2 = "temp/presentation2.ppt";
         String[] inputs = {file1, file2};
 
         for(String arg : inputs){
@@ -33,7 +33,7 @@ public class MergingMultiplePresentations {
             }
         }
 
-        String file3 = "combinedPresentation.ppt";
+        String file3 = "temp/combinedPresentation.ppt";
 
         //creating the file object
         FileOutputStream out = new FileOutputStream(file3);

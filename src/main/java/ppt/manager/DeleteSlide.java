@@ -1,4 +1,4 @@
-package manager;
+package ppt.manager;
 
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 
@@ -15,11 +15,13 @@ public class DeleteSlide {
     public static void main(String args[]) throws IOException {
 
         //Opening an existing slide
-        File file=new File("image.ppt");
+        File file = new File(".\\temp\\delete.ppt");
         XMLSlideShow ppt = new XMLSlideShow(new FileInputStream(file));
 
         //deleting a slide
-        ppt.removeSlide(1);
+        ppt.removeSlide(2);
+
+        System.out.println("=============delete successfully");
 
         //creating a file object
         FileOutputStream out = new FileOutputStream(file);

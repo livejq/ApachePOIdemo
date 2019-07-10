@@ -1,4 +1,4 @@
-package TextFormat;
+package ppt.TextFormat;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,10 +26,10 @@ public class TextFormating {
         //getting the slide master object
         XSLFSlideMaster slideMaster = ppt.getSlideMasters().get(0);
 
-        //select a layout from specified list
+        //select a ppt.layout from specified list
         XSLFSlideLayout slideLayout = slideMaster.getLayout(SlideLayout.TITLE_AND_CONTENT);
 
-        //creating a slide with title and content layout
+        //creating a slide with title and content ppt.layout
         XSLFSlide slide = ppt.createSlide(slideLayout);
 
         //selection of title place holder
@@ -88,7 +88,7 @@ public class TextFormating {
         paragraph.addLineBreak();
 
         //creating a file object
-        File file=new File("TextFormat.ppt");
+        File file=new File("temp/ppt.TextFormat.ppt");
 
         FileOutputStream out = new FileOutputStream(file);
 

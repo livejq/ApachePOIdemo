@@ -1,4 +1,4 @@
-package transfer;
+package ppt.transfer;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -20,7 +20,7 @@ public class PptToPNG {
     public static void main(String args[]) throws IOException{
 
         //creating an empty presentation
-        File file = new File("addingImage.ppt");
+        File file = new File("temp/addingImage.ppt");
         XMLSlideShow ppt = new XMLSlideShow(new FileInputStream(file));
 
         //getting the dimensions and size of the slide
@@ -38,7 +38,7 @@ public class PptToPNG {
             //render
             slide.get(i).draw(graphics);
 
-            //creating an image file as output
+            //creating an ppt.image file as output
             FileOutputStream out = new FileOutputStream("ppt_image"+ i +".png");
             javax.imageio.ImageIO.write(img, "png", out);
             ppt.write(out);

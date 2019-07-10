@@ -26,9 +26,9 @@ public class AddImgToPPt {
         //获取幻灯片主题列表：
         List slideMasters = (List) ppt.getSlideMasters();
         //获取幻灯片的布局样式
-        XSLFSlideLayout layout = slideMasters.get(0).getLayout(SlideLayout.TITLE_AND_CONTENT);
+        XSLFSlideLayout ppt.layout = slideMasters.get(0).getLayout(SlideLayout.TITLE_AND_CONTENT);
         //通过布局样式创建幻灯片
-        XSLFSlide slide = ppt.createSlide(layout);
+        XSLFSlide slide = ppt.createSlide(ppt.layout);
         // 创建一张无样式的幻灯片
 //        XSLFSlide slide = ppt.createSlide();
 
@@ -40,14 +40,14 @@ public class AddImgToPPt {
         content.clearText();
         content.setText("图片区");
 
-        // reading an image
-        File image = new File("F:livejq.png");
+        // reading an ppt.image
+        File ppt.image = new File("F:livejq.png");
         //获取图片信息：
-        BufferedImage img = ImageIO.read(image);
+        BufferedImage img = ImageIO.read(ppt.image);
         // converting it into a byte array
-        byte[] picture = IOUtils.toByteArray(new FileInputStream(image));
+        byte[] picture = IOUtils.toByteArray(new FileInputStream(ppt.image));
 
-        // adding the image to the presentation
+        // adding the ppt.image to the presentation
         XSLFPictureData idx = ppt.addPicture(picture, PictureData.PictureType.PNG);
 
         // creating a slide with given picture on it
@@ -59,7 +59,7 @@ public class AddImgToPPt {
         FileOutputStream out = new FileOutputStream(file);
         // saving the changes to a file
         ppt.write(out);
-        System.out.println("image added successfully");
+        System.out.println("ppt.image added successfully");
         out.close();
     }
 }

@@ -1,4 +1,4 @@
-package layout;
+package ppt.layout;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -15,7 +15,7 @@ import org.apache.poi.xslf.usermodel.XSLFTextShape;
  * @date 2019/7/10
  **/
 public class TitleLayout {
-    public static void main(String args[]) throws IOException{
+    public static void main(String[] args) throws IOException {
 
         //creating presentation
         XMLSlideShow ppt = new XMLSlideShow();
@@ -23,20 +23,20 @@ public class TitleLayout {
         //getting the slide master object
         XSLFSlideMaster slideMaster = ppt.getSlideMasters().get(0);
 
-        //get the desired slide layout
+        //get the desired slide ppt.layout
         XSLFSlideLayout titleLayout = slideMaster.getLayout(SlideLayout.TITLE);
 
-        //creating a slide with title layout
+        //creating a slide with title ppt.layout
         XSLFSlide slide1 = ppt.createSlide(titleLayout);
 
         //selecting the place holder in it
         XSLFTextShape title1 = slide1.getPlaceholder(0);
 
         //setting the title init
-        title1.setText("Tutorials point");
+        title1.setText("livejq test temp code");
 
         //create a file object
-        File file = new File("TITLElayout.ppt");
+        File file = new File(".\\temp\\TITLElayout.ppt");
         FileOutputStream out = new FileOutputStream(file);
 
         //save the changes in a PPt document

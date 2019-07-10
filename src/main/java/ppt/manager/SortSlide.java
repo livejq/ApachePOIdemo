@@ -1,4 +1,4 @@
-package manager;
+package ppt.manager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,17 +17,17 @@ public class SortSlide {
     public static void main(String args[]) throws IOException{
 
         //opening an existing presentation
-        File file = new File("example1.ppt");
+        File file = new File(".\\temp\\example1.ppt");
         XMLSlideShow ppt = new XMLSlideShow(new FileInputStream(file));
 
         //get the slides
         List<XSLFSlide> slides = ppt.getSlides();
 
         //selecting the fourth slide
-        XSLFSlide selectesdslide = slides.get(2);
+        XSLFSlide selectedSlide = slides.get(2);
 
         //bringing it to the top
-        ppt.setSlideOrder(selectesdslide, 0);
+        ppt.setSlideOrder(selectedSlide, 0);
 
         //creating an file object
         FileOutputStream out = new FileOutputStream(file);
