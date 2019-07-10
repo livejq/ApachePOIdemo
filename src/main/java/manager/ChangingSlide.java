@@ -14,7 +14,7 @@ public class ChangingSlide {
     public static void main(String args[]) throws IOException{
 
         //create file object
-        File file = new File("TitleAndContentLayout.ppt");
+        File file = new File("TitleAndContentLayout.pptx");
 
         //create presentation
         XMLSlideShow ppt = new XMLSlideShow();

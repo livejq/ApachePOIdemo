@@ -36,7 +36,7 @@ public class TitleLayout {
         title1.setText("Tutorials point");
 
         //create a file object
-        File file = new File("Titlelayout.ppt");
+        File file = new File("TITLElayout.ppt");
         FileOutputStream out = new FileOutputStream(file);
 
         //save the changes in a PPt document

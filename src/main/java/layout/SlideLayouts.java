@@ -17,15 +17,18 @@ public class SlideLayouts {
         XMLSlideShow ppt = new XMLSlideShow();
         System.out.println("Available slide layouts:");
 
+        int num = 0;
         //getting the list of all slide masters
         for(XSLFSlideMaster master : ppt.getSlideMasters()){
 
             //getting the list of the layouts in each slide master
             for(XSLFSlideLayout layout : master.getSlideLayouts()){
 
+                num++;
                 //getting the list of available slides
                 System.out.println(layout.getType());
             }
         }
+        System.out.println("布局类型总数" + num);
     }
 }
