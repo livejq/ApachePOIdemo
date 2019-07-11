@@ -1,25 +1,21 @@
+package ppt.drill;
+
 import org.apache.poi.sl.usermodel.PictureData;
-import org.apache.poi.sl.usermodel.SlideShow;
-import org.apache.poi.sl.usermodel.TextRun;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xslf.usermodel.*;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 
 /**
  * @author livejq
  * @date 2019/7/9
-
-public class PPtExportUtil {
-    //找到当前文件夹下面的所有图片文件
+ **/
+public class PptExportUtil {
+    /*//找到当前文件夹下面的所有图片文件
     private  List<File> ImgList = new ArrayList<File>();
     public List findAllImgFile(File file) throws IOException {
 //        File file = new File("F:\\workroom\\img");
@@ -32,78 +28,88 @@ public class PPtExportUtil {
             }
         }
         return ImgList;
-    }
+    }*/
 
-    public static XMLSlideShow exportPPt() throws IOException {
+    public static XMLSlideShow exportPpt() throws IOException {
         // 创建ppt:
         XMLSlideShow ppt = new XMLSlideShow();
+        java.util.List<XSLFFontInfo> fontList = ppt.getFonts();
         //设置幻灯片的大小：
         Dimension pageSize = ppt.getPageSize();
         pageSize.setSize(975, 730);
 
         // 创建一张无样式的幻灯片（首页）
         XSLFSlide slide = ppt.createSlide();
-        //标题
+        // 背景
+        slide.getBackground().setFillColor(new Color(55, 55, 122));
+        // 标题
         XSLFTextBox title = slide.createTextBox();   //创建文本框
         title.setAnchor(new Rectangle2D.Double(400, 100, 250, 100));  //设置文本框的位置
+        // 段落1
         XSLFTextParagraph titleFontP = title.addNewTextParagraph();    //创建一个段落
         XSLFTextRun titleTextRun = titleFontP.addNewTextRun();      //创建文本
-        titleTextRun.setText("成都肛肠医院--发布");                  //设置文本类容
+        titleTextRun.setText("xxxx大学--发布公告");                  //设置文本类容
         titleTextRun.setFontSize(26.00);  //设置标题字号
-//        titleTextRun.setBold(true);    //设置成粗体
+        titleTextRun.setBold(true);    //设置成粗体
+        System.out.println("段落内容：" + titleFontP.getText() + "，是否加粗：" + titleTextRun.isBold() + "，字体大小：" + titleTextRun.getFontSize());
+        // 段落2
         XSLFTextParagraph titlePr = title.addNewTextParagraph();
-        titlePr.setSpaceBefore(-20D);     // 设置与上一行的行距 :20D
-        titlePr.setLeftMargin(35D);        //设置段落开头的空格数
+        titlePr.setSpaceBefore(-20D);     // 设置与上一行的行距 :20D(正数代表正常行高的百分比)
+        titlePr.setLeftMargin(35D);        // 设置段落开头的空格数
         titlePr.setBulletFont("宋体");
+//        titlePr.setBulletStyle("微软雅黑");
+        titlePr.setBulletFontColor(new Color(255, 51, 0));
+        titlePr.setLineSpacing(50D);
+        System.out.println("字体：" + titlePr.getBulletFont()
+                + "，段落开头的空格数:" + titlePr.getLeftMargin()
+                + "，与上一行的行距：" + titlePr.getSpaceBefore()
+                + "，行高：" + titlePr.getLineSpacing());
         XSLFTextRun xslfTextRun = titlePr.addNewTextRun();
-        xslfTextRun.setText("媒体监测报告");
-        xslfTextRun.setFontSize(26.00);
-        //公司
+        xslfTextRun.setText("新生报到时间");
+        xslfTextRun.setFontSize(26D);
+        // 文本框1
         XSLFTextBox textBox = slide.createTextBox();
         textBox.setAnchor(new Rectangle2D.Double(30, 150, 300, 150));
         XSLFTextRun paragraph = textBox.addNewTextParagraph().addNewTextRun();
-        paragraph.setText("智互联科技有限公司");
+        paragraph.setText("xxx科技有限公司");
         paragraph.setBold(true);
-        paragraph.setFontSize(30.00);
-
-//      城市
+        paragraph.setFontSize(30D);
+        // 文本框2
         XSLFTextBox textCityBox = slide.createTextBox();
         textCityBox.setAnchor(new Rectangle2D.Double(440, 390, 250, 100));
         XSLFTextRun city = textCityBox.addNewTextParagraph().addNewTextRun();
-        city.setText("成都");
-        city.setFontSize(20.00);
-//     时间
+        city.setText("广州");
+        city.setFontSize(20D);
+        // 文本框3
         XSLFTextBox textTimeBox = slide.createTextBox();
         textTimeBox.setAnchor(new Rectangle2D.Double(400, 420, 400, 100));
         XSLFTextRun time = textTimeBox.addNewTextParagraph().addNewTextRun();
         time.setText("2018年12月10日-2019年1月28日");
-        time.setFontSize(20.00);
+        time.setFontSize(20D);
 
-//   插入图片到ppt中 、每页显示两张
-        //测试图片数据
+        // 测试图片数据
         ArrayList<String> imgs = new ArrayList<String>();
         imgs.add("F:\\livejq.png");
         imgs.add("F:\\livejq.png");
-        imgs.add("F:\\livejq.png");
-        imgs.add("F:\\livejq.png");
-        //获取图片信息：
-//      BufferedImage img = ImageIO.read(ppt.image);
-        if (imgs.size() > 0) {
-            for (int i = 0; i < imgs.size(); i++) {
-                //创建一张幻灯片
+        // 在2个幻灯片中分别插入2张图片
+        int insertImg = 2;
+        int slideSize = 2;
+        if (imgs.size() >= insertImg) {
+            for (int i = 0; i < slideSize; i++) {
+                // 创建一张幻灯片(最好读取一个现有的ppt文件)
                 XSLFSlide slidePicture = ppt.createSlide();
-                //项目名字
+                // 文本框1
                 XSLFTextBox projectNameBox = slidePicture.createTextBox();
                 projectNameBox.setAnchor(new Rectangle2D.Double(150, 100, 200, 200));
                 XSLFTextRun projectName = projectNameBox.addNewTextParagraph().addNewTextRun();
-                projectName.setText("万科京城");
+                projectName.setText("xxx班级");
                 projectName.setBold(true);
                 projectName.setFontSize(20.00);
-                //项目信息
+                // 文本框2
                 XSLFTextBox projectInfoBox = slidePicture.createTextBox();
                 projectInfoBox.setAnchor(new Rectangle2D.Double(280, 100, 400, 200));
                 XSLFTextRun projectInfo = projectInfoBox.addNewTextParagraph().addNewTextRun();
-                projectInfo.setText("社区位置：" + "成都市锦江区水三接166号");
+                projectInfo.setText("xx地址：" + "成都市锦江区水三接166号");
                 projectInfo.setFontSize(14.00);
                 XSLFTextRun projectType = projectInfoBox.addNewTextParagraph().addNewTextRun();
                 projectType.setText("社区属性：" + "商住楼");
@@ -114,41 +120,34 @@ public class PPtExportUtil {
                 XSLFTextRun projectPushNum = projectInfoBox.addNewTextParagraph().addNewTextRun();
                 projectPushNum.setText("实际发布：" + "8");
                 projectPushNum.setFontSize(14.00);
-                //发布实景图
+                // 文本框3
                 XSLFTextBox pushPic = slidePicture.createTextBox();
                 pushPic.setAnchor(new Rectangle2D.Double(150, 210, 400, 100));
                 XSLFTextRun pushPicTxt = pushPic.addNewTextParagraph().addNewTextRun();
                 pushPicTxt.setText("发布实景图:");
                 pushPicTxt.setFontSize(14.00);
 
-                //       插入图片 、每页显示两张图片:
-                int h = 2;
-                for (int k = 0;k<h;k++){
-                    if(i<imgs.size()){
-                        byte[] picture2 = IOUtils.toByteArray(new FileInputStream(imgs.get(i++)));
-                        XSLFPictureData idx2 = ppt.addPicture(picture2, PictureData.PictureType.JPEG);
-                        XSLFPictureShape pic2 = slidePicture.createPicture(idx2);
-                        if(k==0){
-                            pic2.setAnchor(new java.awt.Rectangle(150, 260, 200, 240));
-                        }else if (k==1){
-                            pic2.setAnchor(new java.awt.Rectangle(400, 260, 200, 240));
-                        }
+                for (int k = 0; k < insertImg; k++){
+                    byte[] picture2 = IOUtils.toByteArray(new FileInputStream(imgs.get(k)));
+                    XSLFPictureData idx2 = ppt.addPicture(picture2, PictureData.PictureType.JPEG);
+                    XSLFPictureShape pic2 = slidePicture.createPicture(idx2);
+                    if(k == 0){
+                        pic2.setAnchor(new java.awt.Rectangle(150, 260, 200, 240));
+                    }else if (k == 1){
+                        pic2.setAnchor(new java.awt.Rectangle(400, 260, 200, 240));
                     }
-                }
-                if(i>0){
-                    i=i-1;
                 }
             }
         }
-
         System.out.println("ppt.image added successfully");
+
         return ppt;
     }
 
-    public static void ExportPPtModel() throws IOException {
-        //读取模板ppt
+    /*public static void ExportPPtModel() throws IOException {
+        // 读取模板ppt
         SlideShow ppt = new XMLSlideShow(new FileInputStream("F:a2.pptx"));
-        //提取文本信息
+        // 提取文本信息
         List slides = (List) ppt.getSlides();
         //   SlideShow slideShow = copyPage(slides.get(1), ppt,2);
         for (XSLFSlide slide : slides) {
@@ -211,13 +210,12 @@ public class PPtExportUtil {
         OutputStream outputStreams = new FileOutputStream("F:\\test2.pptx");
         ppt.write(outputStreams);
     }
-
+*/
     public static void main(String[] args) throws IOException {
-        XMLSlideShow xmlSlideShow = PPtExportUtil.exportPPt();
+        XMLSlideShow xmlSlideShow = PptExportUtil.exportPpt();
 
-        File ppt = new File("F:\\a.ppt");
+        File ppt = new File("temp/demo01.ppt");
 
         xmlSlideShow.write(new FileOutputStream(ppt));
     }
 }
- **/

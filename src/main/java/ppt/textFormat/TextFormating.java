@@ -1,17 +1,10 @@
-package ppt.TextFormat;
+package ppt.textFormat;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.apache.poi.xslf.usermodel.SlideLayout;
-import org.apache.poi.xslf.usermodel.XMLSlideShow;
-import org.apache.poi.xslf.usermodel.XSLFSlide;
-import org.apache.poi.xslf.usermodel.XSLFSlideLayout;
-import org.apache.poi.xslf.usermodel.XSLFSlideMaster;
-import org.apache.poi.xslf.usermodel.XSLFTextParagraph;
-import org.apache.poi.xslf.usermodel.XSLFTextRun;
-import org.apache.poi.xslf.usermodel.XSLFTextShape;
+import org.apache.poi.xslf.usermodel.*;
 
 /**
  * @author livejq
@@ -88,7 +81,7 @@ public class TextFormating {
         paragraph.addLineBreak();
 
         //creating a file object
-        File file=new File("temp/ppt.TextFormat.ppt");
+        File file=new File("temp/ppt.textFormat.ppt");
 
         FileOutputStream out = new FileOutputStream(file);
 

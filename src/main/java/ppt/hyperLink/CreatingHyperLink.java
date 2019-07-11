@@ -1,4 +1,4 @@
-package ppt.HyperLink;
+package ppt.hyperLink;
 
 
 import org.apache.poi.xslf.usermodel.SlideLayout;
@@ -50,6 +50,7 @@ public class CreatingHyperLink {
 
         //setting the link address
         link.setAddress("www.baidu.com");
+        System.out.println(link.getAddress());
 
         //create the file object
         File file = new File(".\\temp\\hyperLink.ppt");

@@ -1,4 +1,4 @@
-package ppt.Shape;
+package ppt.shape;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,20 +38,23 @@ public class ReadingShapes {
                 // shapes's anchor which defines the position of this shape in the slide
                 if (sh instanceof PlaceableShape) {
                     java.awt.geom.Rectangle2D anchor = ((PlaceableShape)sh).getAnchor();
-                    System.out.println(anchor.getY());
+                    System.out.println("锚:" + anchor.getY());
                 }
-
+                if (sh instanceof XSLFTextBox) {
+                    XSLFTextBox textBox = (XSLFTextBox) sh;
+                    System.out.println("文本框:"+textBox.getText());
+                }
                 if (sh instanceof XSLFConnectorShape) {
                     XSLFConnectorShape line = (XSLFConnectorShape) sh;
-                    System.out.println(line.getShapeName());
+                    System.out.println("行:" +line.getShapeName());
                     // work with Line
                 } else if (sh instanceof XSLFTextShape) {
                     XSLFTextShape shape = (XSLFTextShape) sh;
-                    System.out.println(shape.getText());
+                    System.out.println("文本:" + shape.getText());
                     // work with a shape that can hold text
                 } else if (sh instanceof XSLFPictureShape) {
                     XSLFPictureShape shape = (XSLFPictureShape) sh;
-                    System.out.println(shape.getShapeName());
+                    System.out.println("图片:" + shape.getShapeName() + "，超链接：" + shape.getHyperlink());
                     // work with Picture
                 }
                 if(j + 1 != xslfShapeList.size())
