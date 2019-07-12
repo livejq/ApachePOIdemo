@@ -42,7 +42,7 @@ public class Tutorial3 {
             titleShape.setText("This is a slide title");
             titleShape.setAnchor(new Rectangle(50, 50, 400, 100));
 
-            try (FileOutputStream out = new FileOutputStream("title.pptx")) {
+            try (FileOutputStream out = new FileOutputStream("temp/title.pptx")) {
                 ppt.write(out);
             }
         }

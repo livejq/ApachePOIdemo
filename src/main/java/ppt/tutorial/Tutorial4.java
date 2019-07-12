@@ -29,7 +29,7 @@ import org.apache.poi.sl.usermodel.TextParagraph.TextAlign;
 import org.apache.poi.xslf.usermodel.*;
 
 /**
- * PPTX Tables
+ * pptx Tables
  */
 public class Tutorial4 {
 
@@ -55,8 +55,8 @@ public class Tutorial4 {
                 r.setBold(true);
                 r.setFontColor(Color.white);
                 th.setFillColor(new Color(79, 129, 189));
-                th.setBorderWidth(BorderEdge.bottom, 2.0);
-                th.setBorderColor(BorderEdge.bottom, Color.white);
+                th.setBorderWidth(BorderEdge.bottom, 8.0);
+                th.setBorderColor(BorderEdge.bottom, Color.MAGENTA);
 
                 tbl.setColumnWidth(i, 150);  // all columns are equally sized
             }
@@ -81,7 +81,7 @@ public class Tutorial4 {
                 }
             }
 
-            try (FileOutputStream out = new FileOutputStream("table.pptx")) {
+            try (FileOutputStream out = new FileOutputStream("temp/table.pptx")) {
                 ppt.write(out);
             }
         }

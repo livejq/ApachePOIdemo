@@ -22,13 +22,14 @@ public class ReadingImage {
 
         //reading all the pictures in the presentation
         for(XSLFPictureData data : ppt.getPictureData()){
-
-//            byte[] bytes = data.getData();
             String fileName = data.getFileName();
-            PictureData.PictureType pictureFormat = data.getType();
+            String extension = data.getType().extension;
             System.out.println("picture name: <" + fileName + ">");
-            System.out.println("picture format: <" + pictureFormat + ">");
+            System.out.println("picture format: <" + extension + ">");
             System.out.println("=====================================");
+            // 获取图片文件
+            FileOutputStream fileOut = new FileOutputStream(new File(".\\temp\\" + data.getIndex() + extension));
+            fileOut.write(data.getData());
         }
         System.out.println("报告总共" + ppt.getSlides().size() + "张幻灯片");
 
