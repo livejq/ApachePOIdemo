@@ -2,12 +2,16 @@ package ppt.drill;
 
 import org.apache.poi.sl.usermodel.*;
 import org.apache.poi.xslf.usermodel.*;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTTable;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTTableProperties;
+import org.openxmlformats.schemas.drawingml.x2006.main.CTTableRow;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -18,7 +22,10 @@ public class PptReader {
 
     private String fileName;
 
-    public PptReader(){};
+    public PptReader() {
+    }
+
+    ;
 
     public PptReader(String fileName) {
         this.fileName = fileName;
@@ -26,16 +33,16 @@ public class PptReader {
 
     public boolean readPpt() throws IOException {
 
-        if(fileName == null || fileName.equals("")) {
+        if (fileName == null || fileName.length() == 0) {
             return false;
         }
         // 读取ppt演示文档
         try (XMLSlideShow ppt = new XMLSlideShow(new FileInputStream(fileName))) {
             // 获取ppt的一些属性（标题，创建者，最后修改时间等）
-            System.out.println(ppt.getProperties().getCoreProperties().getTitle());
+            /*System.out.println(ppt.getProperties().getCoreProperties().getTitle());
             System.out.println(ppt.getProperties().getCoreProperties().getCreator());
             System.out.println(ppt.getProperties().getCoreProperties().getModified());
-            System.out.println(ppt.getProperties().getCoreProperties().getLastModifiedByUser());
+            System.out.println(ppt.getProperties().getCoreProperties().getLastModifiedByUser());*/
 
 
             /** 幻灯片对象 */
@@ -57,16 +64,20 @@ public class PptReader {
             System.out.println("幻灯片背景颜色:(红:" + slide.getBackground().getFillColor().getRed() + "，绿:" + ppt.getSlides().get(0).getBackground().getFillColor().getGreen() + "，蓝:" + ppt.getSlides().get(0).getBackground().getFillColor().getBlue() + ")");
             System.out.println("背景透明度：" + slide.getBackground().getFillColor().getAlpha());
 
-
             /** 文本框对象 */
             System.out.println("=====================================");
+/*
+            DecimalFormat format = new DecimalFormat("##.#");
             // 得先获取到该幻灯片的板式，了解了大致布局后再做解析（这里的板式同上）
-            System.out.println("内容文本框中，文本的内容：<<" + slide.getPlaceholder(1).getText()+ ">>");
-            System.out.println("xx, 文本其中的某个内容：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(0).getRawText());
-            System.out.println("xx, 文本的字体大小：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(0).getFontSize());
-            System.out.println("xx, 文本的字体样式：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(0).getFontFamily());
+            System.out.println("内容文本框中，文本的内容：<<" + slide.getPlaceholder(1).getText() + ">>");
+            System.out.println("xx, 某段内容：" + slide.getPlaceholder(1).getTextParagraphs().get(1).getText());
+            System.out.println("xx, 段落总数" + slide.getPlaceholder(1).getTextBody().getParagraphs().size());
+            System.out.println("xx, 某段内容中的某个内容：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(1).getRawText());
             // 获取内容文本框第一段中第一个出现的超链接（段落中的所有超链接按序组成数组）
-            System.out.println("xx, 文本的超链接地址：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(0).getHyperlink().getAddress());
+            System.out.println("xx, 某段内容中的某个内容的超链接地址：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(1).getHyperlink().getAddress());
+            System.out.println("xx, 文本的字体大小：" + format.format(slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(0).getFontSize()));
+            System.out.println("xx, 文本的字体样式：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(0).getFontFamily());
+            System.out.println("xx, 文本的字体颜色：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(0).getFontColor());
             // 判断文字格式
             System.out.println("xx, 文本的字体是否粗体：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(0).isBold());
             System.out.println("xx, 文本的字体是否有脚注：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(0).isSubscript());
@@ -74,14 +85,27 @@ public class PptReader {
             Color textFillColor = slide.getPlaceholder(1).getFillColor();
             System.out.println("xx, 文本框填充颜色:(红：" + textFillColor.getRed() + "，绿：" + textFillColor.getGreen() + "，蓝:" + textFillColor.getBlue() + ")");
 
-            System.out.println("xx, 段前间距：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getSpaceBefore());
-            System.out.println("xx, 段后间距：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getSpaceAfter());
-            System.out.println("xx, 行高：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getLineSpacing());
+            System.out.println("xx, 段前间距：" + slide.getPlaceholder(1).getTextParagraphs().get(1).getSpaceBefore());
+            System.out.println("xx, 段后间距：" + slide.getPlaceholder(1).getTextParagraphs().get(1).getSpaceAfter());
+            System.out.println("xx, 行距：" + slide.getPlaceholder(1).getTextParagraphs().get(0).getLineSpacing());
+            System.out.println("xx, 行高：" + slide.getPlaceholder(1).getTextHeight());*/
+
+            System.out.println("xx, 缩进级别：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getIndentLevel());
+            System.out.println("xx, 首行缩进：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getIndent());
+            System.out.println("xx, 左外边距：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getLeftMargin());
+            System.out.println("xx, 右外边距：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getRightMargin());
+//            System.out.println("xx, 段前符号颜色：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getBulletFontColor());
+            System.out.println("xx, 段前符号：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getBulletFont());
+            System.out.println("xx, 段前符号大小：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getBulletFontSize());
+            System.out.println("xx, 段落对齐方式：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getTextAlign());
+            System.out.println("xx, 默认字体大小：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getDefaultFontSize());
+            System.out.println("xx, 默认字体样式：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getDefaultFontFamily());
+            System.out.println("xx, 默认Tab大小：" + slide.getPlaceholder(2).getTextParagraphs().get(0).getDefaultTabSize());
 
             /** 图片对象 */
             System.out.println("=====================================");
-            List<XSLFPictureData> pictureData = ppt.getPictureData();
-            for(XSLFPictureData data : pictureData) {
+            /*List<XSLFPictureData> pictureData = ppt.getPictureData();
+            for (XSLFPictureData data : pictureData) {
                 String fileName = data.getFileName();
                 PictureData.PictureType pictureFormat = data.getType();
                 Dimension imageDimensionInPixels = data.getImageDimensionInPixels();
@@ -90,184 +114,43 @@ public class PptReader {
                 System.out.println("图片类型: <" + pictureFormat.contentType + ">");
                 System.out.println("图片后缀: <" + pictureFormat.extension + ">");
                 System.out.println("图片分辨率:<" + imageDimensionInPixels.getWidth() + " X " + imageDimensionInPixels.getHeight() + " px >");
-                System.out.println("图片存储大小:" + imgSize/1024.00 + " KB");
+                System.out.println("图片存储大小:" + imgSize / 1024.00 + " KB");
                 System.out.println("----");
                 // 获取图片文件
                 FileOutputStream fileOut = new FileOutputStream(new File(".\\temp\\" + data.getIndex() + pictureFormat.extension));
                 fileOut.write(data.getData());
-            }
-            for(XSLFSlide xslfSlide : ppt.getSlides()) {
-                List<XSLFShape> shapeList = xslfSlide.getShapes();
-                for(XSLFShape shape : shapeList) {
-                    if (shape instanceof XSLFPictureShape) {
-                        XSLFPictureShape pictureShape = (XSLFPictureShape) shape;
-                        System.out.println("超链接：" + pictureShape.getShapeId());
-                    }
+            }*/
+
+            /** 表格对象 */
+            System.out.println("=====================================");
+            // 获取第二张幻灯片
+            XSLFSlide slide2 = ppt.getSlides().get(1);
+            List<XSLFShape> shapes = slide2.getShapes();
+            for(XSLFShape part : shapes){
+                if(part instanceof XSLFTable){
+                    XSLFTable table = (XSLFTable) part;
+                    CTTable ctt = table.getCTTable();
+                    CTTableProperties tp = ctt.getTblPr();
+                    // 表格行数
+                    System.out.println(ctt.getTrList().size());
+                    // 列数
+                    System.out.println(ctt.getTrList().get(0).getTcList().size());
+                    // cell属性数量
+                    System.out.println(ctt.getTrList().get(0).getTcList().get(0).getTxBody().getPList().size());
+                    // cell内容
+                    System.out.println(ctt.getTrList().get(0).getTcList().get(0).getTxBody().getPList().get(0).getRList().get(0).getT());
                 }
             }
-
 
             /** 表格对象 */
             System.out.println("=====================================");
 
 
-//            XSLFTable tbl = slide.createTable();
-//            tbl.setAnchor(new Rectangle(50, 50, 450, 300));
-//
-//            int numColumns = 3;
-//            int numRows = 5;
-//            XSLFTableRow headerRow = tbl.addRow();
-//            headerRow.setHeight(50);
-//            // header
-//            for (int i = 0; i < numColumns; i++) {
-//                XSLFTableCell th = headerRow.addCell();
-//                XSLFTextParagraph p = th.addNewTextParagraph();
-//                p.setTextAlign(TextParagraph.TextAlign.CENTER);
-//                XSLFTextRun r = p.addNewTextRun();
-//                r.setText("Header " + (i + 1));
-//                r.setBold(true);
-//                r.setFontColor(Color.white);
-//                th.setFillColor(new Color(79, 129, 189));
-//                th.setBorderWidth(TableCell.BorderEdge.bottom, 2.0);
-//                th.setBorderColor(TableCell.BorderEdge.bottom, Color.white);
-//
-//                tbl.setColumnWidth(i, 150);  // all columns are equally sized
-//            }
-//
-//            // rows
-//
-//            for (int rownum = 0; rownum < numRows; rownum++) {
-//                XSLFTableRow tr = tbl.addRow();
-//                tr.setHeight(50);
-//                // header
-//                for (int i = 0; i < numColumns; i++) {
-//                    XSLFTableCell cell = tr.addCell();
-//                    XSLFTextParagraph p = cell.addNewTextParagraph();
-//                    XSLFTextRun r = p.addNewTextRun();
-//
-//                    r.setText("Cell " + (i + 1));
-//                    if (rownum % 2 == 0)
-//                        cell.setFillColor(new Color(208, 216, 232));
-//                    else
-//                        cell.setFillColor(new Color(233, 247, 244));
-//
-//                }
-//            }
-//
-//            try (FileOutputStream out = new FileOutputStream("temp/demo01.pptx")) {
-//                ppt.write(out);
-//            }
         }
 
         return true;
     }
-//            slide.getPlaceholder(1).getTextParagraphs().get(0).getTextRuns().get(0).getFontColor();
-//            System.out.println("xx, 文本的字体颜色：" + );
-
-            /*// 创建一张无样式的幻灯片（首页）
-            XSLFSlide slide = ppt.createSlide();
-            // 背景
-            slide.getBackground().setFillColor(new Color(55, 55, 122));
-            // 标题
-            XSLFTextBox title = slide.createTextBox();   //创建文本框
-            title.setAnchor(new Rectangle2D.Double(400, 100, 250, 100));  //设置文本框的位置
-            // 段落1
-            XSLFTextParagraph titleFontP = title.addNewTextParagraph();    //创建一个段落
-            XSLFTextRun titleTextRun = titleFontP.addNewTextRun();      //创建文本
-            titleTextRun.setText("xxxx大学--发布公告");                  //设置文本类容
-            titleTextRun.setFontSize(26.00);  //设置标题字号
-            titleTextRun.setBold(true);    //设置成粗体
-            System.out.println("段落内容：" + titleFontP.getText() + "，是否加粗：" + titleTextRun.isBold() + "，字体大小：" + titleTextRun.getFontSize());
-            // 段落2
-            XSLFTextParagraph titlePr = title.addNewTextParagraph();
-            titlePr.setSpaceBefore(-20D);     // 设置与上一行的行距 :20D(正数代表正常行高的百分比)
-            titlePr.setLeftMargin(35D);        // 设置段落开头的空格数
-            titlePr.setBulletFont("宋体");
-    //        titlePr.setBulletStyle("微软雅黑");
-            titlePr.setBulletFontColor(new Color(255, 51, 0));
-            titlePr.setLineSpacing(50D);
-            System.out.println("字体：" + titlePr.getBulletFont()
-                    + "，段落开头的空格数:" + titlePr.getLeftMargin()
-                    + "，与上一行的行距：" + titlePr.getSpaceBefore()
-                    + "，行高：" + titlePr.getLineSpacing());
-            XSLFTextRun xslfTextRun = titlePr.addNewTextRun();
-            xslfTextRun.setText("新生报到时间");
-            xslfTextRun.setFontSize(26D);
-            // 文本框1
-            XSLFTextBox textBox = slide.createTextBox();
-            textBox.setAnchor(new Rectangle2D.Double(30, 150, 300, 150));
-            XSLFTextRun paragraph = textBox.addNewTextParagraph().addNewTextRun();
-            paragraph.setText("xxx科技有限公司");
-            paragraph.setBold(true);
-            paragraph.setFontSize(30D);
-            // 文本框2
-            XSLFTextBox textCityBox = slide.createTextBox();
-            textCityBox.setAnchor(new Rectangle2D.Double(440, 390, 250, 100));
-            XSLFTextRun city = textCityBox.addNewTextParagraph().addNewTextRun();
-            city.setText("广州");
-            city.setFontSize(20D);
-            // 文本框3
-            XSLFTextBox textTimeBox = slide.createTextBox();
-            textTimeBox.setAnchor(new Rectangle2D.Double(400, 420, 400, 100));
-            XSLFTextRun time = textTimeBox.addNewTextParagraph().addNewTextRun();
-            time.setText("2018年12月10日-2019年1月28日");
-            time.setFontSize(20D);
-
-            // 测试图片数据
-            ArrayList<String> imgs = new ArrayList<String>();
-            imgs.add("F:\\livejq.png");
-            imgs.add("F:\\livejq.png");
-            // 在2个幻灯片中分别插入2张图片
-            int insertImg = 2;
-            int slideSize = 2;
-            if (imgs.size() >= insertImg) {
-                for (int i = 0; i < slideSize; i++) {
-                    // 创建一张幻灯片(最好读取一个现有的ppt文件)
-                    XSLFSlide slidePicture = ppt.createSlide();
-                    // 文本框1
-                    XSLFTextBox projectNameBox = slidePicture.createTextBox();
-                    projectNameBox.setAnchor(new Rectangle2D.Double(150, 100, 200, 200));
-                    XSLFTextRun projectName = projectNameBox.addNewTextParagraph().addNewTextRun();
-                    projectName.setText("xxx班级");
-                    projectName.setBold(true);
-                    projectName.setFontSize(20.00);
-                    // 文本框2
-                    XSLFTextBox projectInfoBox = slidePicture.createTextBox();
-                    projectInfoBox.setAnchor(new Rectangle2D.Double(280, 100, 400, 200));
-                    XSLFTextRun projectInfo = projectInfoBox.addNewTextParagraph().addNewTextRun();
-                    projectInfo.setText("xx地址：" + "成都市锦江区水三接166号");
-                    projectInfo.setFontSize(14.00);
-                    XSLFTextRun projectType = projectInfoBox.addNewTextParagraph().addNewTextRun();
-                    projectType.setText("社区属性：" + "商住楼");
-                    projectType.setFontSize(14.00);
-                    XSLFTextRun projectDdNum = projectInfoBox.addNewTextParagraph().addNewTextRun();
-                    projectDdNum.setText("合同规定：" + "10");
-                    projectDdNum.setFontSize(14.00);
-                    XSLFTextRun projectPushNum = projectInfoBox.addNewTextParagraph().addNewTextRun();
-                    projectPushNum.setText("实际发布：" + "8");
-                    projectPushNum.setFontSize(14.00);
-                    // 文本框3
-                    XSLFTextBox pushPic = slidePicture.createTextBox();
-                    pushPic.setAnchor(new Rectangle2D.Double(150, 210, 400, 100));
-                    XSLFTextRun pushPicTxt = pushPic.addNewTextParagraph().addNewTextRun();
-                    pushPicTxt.setText("发布实景图:");
-                    pushPicTxt.setFontSize(14.00);
-
-                    for (int k = 0; k < insertImg; k++){
-                        byte[] picture2 = IOUtils.toByteArray(new FileInputStream(imgs.get(k)));
-                        XSLFPictureData idx2 = ppt.addPicture(picture2, PictureData.PictureType.JPEG);
-                        XSLFPictureShape pic2 = slidePicture.createPicture(idx2);
-                        if(k == 0){
-                            pic2.setAnchor(new Rectangle(150, 260, 200, 240));
-                        }else if (k == 1){
-                            pic2.setAnchor(new Rectangle(400, 260, 200, 240));
-                        }
-                    }
-                }
-            }
-            System.out.println("ppt.image added successfully");*/
-
-
+}
 
     /*public static void ExportPPtModel() throws IOException {
         // 读取模板ppt
@@ -335,6 +218,7 @@ public class PptReader {
         OutputStream outputStreams = new FileOutputStream("F:\\test2.pptx");
         ppt.write(outputStreams);
     }
-*/
+
 
 }
+*/

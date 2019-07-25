@@ -17,37 +17,31 @@
  * ==================================================================== 
  */
 
-package ppt.tutorial;
+package ppt.example.xslf;
 
-import java.awt.Rectangle;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import org.apache.poi.sl.usermodel.Placeholder;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
-import org.apache.poi.xslf.usermodel.XSLFTextShape;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 /**
- * How to set slide title
+ * Merge multiple pptx presentations together
  */
-public class Tutorial3 {
+public final class MergePresentations {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         try (XMLSlideShow ppt = new XMLSlideShow()) {
-            XSLFSlide slide = ppt.createSlide();
+            for (String arg : args) {
+                try (FileInputStream is = new FileInputStream(arg);
+                     XMLSlideShow src = new XMLSlideShow(is)) {
+                    for (XSLFSlide srcSlide : src.getSlides()) {
+                        ppt.createSlide().importContent(srcSlide);
+                    }
+                }
+            }
 
-            XSLFTextShape titleShape = slide.createTextBox();
-            titleShape.setPlaceholder(Placeholder.TITLE);
-            titleShape.setText("This is a slide title");
-            titleShape.setAnchor(new Rectangle(50, 50, 400, 100));
-
-            XSLFTextShape titleShape2 = slide.createTextBox();
-            titleShape2.setPlaceholder(Placeholder.SUBTITLE);
-            titleShape2.setText("This is a subtitle");
-            titleShape2.setAnchor(new Rectangle(200, 200, 400, 100));
-
-            try (FileOutputStream out = new FileOutputStream("temp/title.pptx")) {
+            try (FileOutputStream out = new FileOutputStream("merged.pptx")) {
                 ppt.write(out);
             }
         }

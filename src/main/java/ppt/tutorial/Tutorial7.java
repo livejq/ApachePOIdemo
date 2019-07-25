@@ -39,7 +39,7 @@ public class Tutorial7 {
             shape.setAnchor(new Rectangle(50, 50, 400, 200));
 
             XSLFTextParagraph p1 = shape.addNewTextParagraph();
-            p1.setIndentLevel(0);
+            p1.setIndentLevel(5);
             p1.setBullet(true);
             XSLFTextRun r1 = p1.addNewTextRun();
             r1.setText("Bullet1");
@@ -53,7 +53,7 @@ public class Tutorial7 {
             // customize bullets
             p2.setBulletFontColor(Color.red);
             p2.setBulletFont("Wingdings");
-            p2.setBulletCharacter("\u0075");
+            p2.setBulletCharacter("\u0074");
             p2.setIndentLevel(1);
             XSLFTextRun r2 = p2.addNewTextRun();
             r2.setText("Bullet2");
@@ -79,7 +79,7 @@ public class Tutorial7 {
 
             shape.resizeToFitText();
 
-            try (FileOutputStream out = new FileOutputStream("list.pptx")) {
+            try (FileOutputStream out = new FileOutputStream("temp/list.pptx")) {
                 ppt.write(out);
             }
         }

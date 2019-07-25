@@ -33,7 +33,7 @@ import org.apache.poi.xslf.usermodel.*;
  */
 public class Tutorial4 {
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
         try (XMLSlideShow ppt = new XMLSlideShow()) {
             // XSLFSlide#createSlide() with no arguments creates a blank slide
             XSLFSlide slide = ppt.createSlide();
@@ -58,7 +58,7 @@ public class Tutorial4 {
                 th.setBorderWidth(BorderEdge.bottom, 8.0);
                 th.setBorderColor(BorderEdge.bottom, Color.MAGENTA);
 
-                tbl.setColumnWidth(i, 150);  // all columns are equally sized
+                tbl.setColumnWidth(i, 100);  // all columns are equally sized
             }
 
             // rows
